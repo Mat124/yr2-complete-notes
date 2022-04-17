@@ -140,5 +140,108 @@ TCP provides reliable and in-order data transfer (lost packets are resent and pa
 
 ![TCP handshake diagram](TCP_handshake_diagram.png)
 
+### TCP Socket Programming
+
+Server process must already be running and have created a socket ready for TCP setup. The client process creates a TCP socket, specifying IP address and port number which attempts to establish a connection to the server TCP socket. Once contacted by the client, the server creates a new socket for the specific connection between the server and that client, allowing a server to communicate with multiple clients.
+
+Application view: TCP provides reliable, in-order byte-stream transfer between client and server.
+
+![TCP socket programming example](TCP_socket_diagram.png)
+
 ## UDP
+
+Packetizes data and sends to the network with no effort to recover losses and no connection setup required. As UDP does less, time to start sending packets is smaller and the headers are smaller. Applications with real-time requirements like Skype/games use UDP.
+
+### UDP Socket Programming
+
+Connectionless socket - no synchronisation required before sending data. Sender explicitly attaches destination IP and port to each packet. Receiver extracts data, sender IP and port from the packet. Packets may be lost or received out of order. 
+
+Application view: UDP provides unreliable transfer of groups of bytes (*datagrams*) between the client and server.
+
+![UDP socket programming example](UDP_socket_transfer.png)
+
+# HTTP (Hyper Text Transfer Protocol)
+
+Web browsers communicate with web servers using the HTTP (and HTTPS) application layer protocol. HTTP is specified by the IETF (see above) and uses TCP with port 80. Once a TCP connection is established like usual, HTTP messages are exchanged.
+
+## Overview
+
+A client sends a HTTP request for a webpage to a web server 'hosting' webpages. The server responds with a HTTP message containing the requested webpage(s).
+
+![HTTP general diagram](HTTP_general_diagram.png)
+
+## Web Pages
+
+Consists of objects, all of which are files. These objects (HTML files, JPEG files, JSON files, etc) are addressable by a URL, e.g. "www.site.com/images/cat.png". In this example, "www.site.com" is the host name (maps to the server IP address) and "images/cat.png" is the path name, a path within the file directory of the server that is accessible to clients.
+
+Most pages are HTML files containing referenced objects like images or text files.
+
+## Connection Types
+
+### **Non-persistent (HTTP v1.0):**
+
+Each object is downloaded over separate TCP connections, so multiple objects require multiple TCP connections.
+
+1) Client sends SYN, server responds with SYN-ACK
+2) Client sends ACK and begins HTTP messages - requests the base HTML file
+3) Server sends a HTTP response with the requested file attached
+4) Server closes TCP connection
+5) Client examines HTML file and identifies any other objects that are required
+6) Steps 1-4 are repeated for all referenced files - inefficient
+
+Has a long response time due to repeated opening/closing of TCP connections. Total time to load the pages is: number of files \* (2 \* RTT + file transmission time)
+
+![HTTP response timings](HTTP_response_timings.png)
+
+As well as long response timings, this also increases overhead in the server due to the repeated allocation of resources to creating new TCP connections.
+
+### **Persistent (HTTP v1.1+):**
+
+Multiple objects can be sent over a single TCP connection - server leaves the connection open after sending HTTP response. Subsequent HTTP messages are sent over the same open connection. 
+
+Total time to load the page is: 2 \* RTT + total file transmission time
+
+## HTTP message Format
+
+### Request
+
+![HTTP request format](HTTP_request_format.png)
+
+### Response
+
+![HTTP response format](HTTP_response_format.png)
+
+## Web caching
+
+A web cache is installed in a network. Clients can be configured to access the web using the web cache. HTTP requests are sent through the web cache - if the requested object is in the web cache then the cache returns the object - reducing response time and traffic in the ISP network (reduces cost for ISP) and internet as a whole. If the object is not in the cache, then the cache makes a request to the origin server and returns the object to the client itself.
+
+Caches are usually installed by ISPs or companies to serve requests of popular contents and reduce costs.
+
+# Misc Topics
+
+## Network Interfaces
+
+A point of connection between a computer and a network - a computer can have multiple, e.g. WiFi and Ethernet/multiple ethernet ports. An interface usually takes the form of a network interface card (NIC), but can be software only, e.g. **loopback interface (localhost)** is not a physical device.
+
+Each network interface has an IP address if connected to any network, and hardware NIC always have MAC addresses.
+
+## Link Layer headers (Ethernet Header)
+
+Fixed length of 14 bytes
+
+![Ethernet Header](ethernet_header.png)
+
+MAC address: 48bits/6bytes each,  describes the interfaces between which the packet has traversed
+
+protocol: 16bits/2bytes describes protocol of the next layer, e.g. 0x0800 for IPv4, 0x0806 for ARP
+
+## Network layer header (IPv4 header)
+
+![IP Header](IP_header.png)
+
+IHL: 4bits, stores the length of header in 4 byte words
+
+protocol: 8bits/1byte, describes protocol of the next layer
+
+addresses: 32bits/4bytes, the IPv4 addresses of computers traversed between
 
