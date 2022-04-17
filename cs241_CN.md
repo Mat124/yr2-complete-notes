@@ -128,17 +128,42 @@ Ports are 16 bit numbers from 0-65535. These are used to identify which process 
 
 # Transport Layer
 
-All transport layer protocols offer some basic services:
+All transport layer protocols offer some basic services to provide communication between processes running on different hosts:
 
-- packetisation, addressing, sequencing, error correcting bits
+**Send side:** break data to be sent into segments (packets), add header with port data, pass onto network layer.
+
+**Receive side:** reassemble segments (packets) into messages, pass to application layer
 
 There are two main transport layer protocols used in the internet: Transmission Control Protocol (TCP) and User Datagram Protocol (UDP).
 
 ## TCP
 
-TCP provides reliable and in-order data transfer (lost packets are resent and packets are reordered) and is connection oriented - setup is required between the client and server before they can start transferring data.
+TCP provides reliable and in-order data transfer (lost packets are resent and packets are reordered) and is connection oriented - setup is required between the client and server before they can start transferring data. TCP provides flow control, matching the sender speed to the reading speed to stop receiving buffer overflows. Congestion control also limits the sending rate according to the perceived network congestion to prevent overwhelming the network and packet loss.
 
 ![TCP handshake diagram](TCP_handshake_diagram.png)
+
+### Flow Control
+
+
+
+### Congestion Control
+
+### Reliability
+
+TCP enhances the unreliable network layer service into a reliable transport layer service.
+
+Unreliability in the network layer comes from:
+
+- **bit errors:** bits get flipped due to random electrical noise
+- **packet loss:** packets are lost due to buffer overflow at routers/receiver
+
+Mechanisms to create reliability in TCP:
+
+- **Checksums:** used to detect bit errors, includes the sum of all 16-bit words in the header - bit error has occurred if this sum is not the same.
+- **ACKs:** used to indicate that a packet has been correctly received at the receiver.
+- **Timeout mechanism:** Sender considers a packet lost if an ACK is not received within a timeout interval.
+- **Retransmissions:** resend lost/corrupted packets, can be done using Automatic Repeat Request (ARQ).
+- **Sequence number:** used to detect/identify duplicates at the receiver and identify which packets need resending.
 
 ### TCP Socket Programming
 
@@ -148,9 +173,21 @@ Application view: TCP provides reliable, in-order byte-stream transfer between c
 
 ![TCP socket programming example](TCP_socket_diagram.png)
 
+### TCP header structure
+
+**Sequence Number:** 32-bit sequence number of the segment indicating the number of the first byte.
+
+**ACK number:** 32-bit number of the next byte expected.
+
+**Receive window:** used for flow control.
+
+![TCP header structure](TCP_header.png)
+
 ## UDP
 
-Packetizes data and sends to the network with no effort to recover losses and no connection setup required. As UDP does less, time to start sending packets is smaller and the headers are smaller. Applications with real-time requirements like Skype/games use UDP.
+Packetizes data and sends to the network with no effort to recover losses/reorder packets and no connection setup required - bare minimum services. As UDP does less, time to start sending packets is smaller and the headers are smaller. There is also no congestion control with UDP, so packets are sent at any rate requested even when the network is congested - this can cause issues and major packet loss.
+
+Applications with real-time requirements like Skype/games use UDP as they require a high rate of transfer and are more tolerant to losses due to repeated updates.
 
 ### UDP Socket Programming
 
@@ -159,6 +196,68 @@ Connectionless socket - no synchronisation required before sending data. Sender 
 Application view: UDP provides unreliable transfer of groups of bytes (*datagrams*) between the client and server.
 
 ![UDP socket programming example](UDP_socket_transfer.png)
+
+## Reliable Data Transfer
+
+### Stop and Wait ARQ
+
+Sender sends a packet and waits until it receives the correct ACK back before sending next packet. If the correct ACK doesn't arrive in a given time frame, then the packet is resent.
+
+![Stop and wait ARQ](stop_and_wait_ARQ.png)
+
+Uses an **alternating bit protocol** with packet numbers and ACKs, as each packet is confirmed received before the next is sent so at most one outstanding packet. This allows for duplicate detection.
+
+![Stop and wait alternating bit protocol](stop_and_wait_alternating_bit.png)
+
+Stop and wait ARQ provides reliable data transfer, but very poor performance as the sender has to wait a minimum of the round trip time (RTT) after the first packet is sent to begin sending the next. 
+
+If packet length L=8000 bits, link rate R = 1 Gbps (10<sup>9</sup> bps) and RTT is 0.03 seconds, the link usage proportion U is:
+
+![Link usage](stop_and_wait_link_usage.png)
+
+**Delay bandwidth product:** RxRTT is the 'delay-bandwidth product', and indicates the amount of additional data that could be sent during the round trip time.
+
+The receiving process typically has a finite buffer (pipeline) of B bits to store incoming packets, and may not be reading from the buffer constantly. To prevent buffer overflow, the sender is limited to sending B bits before the first ACK, and the sending L bits per ACK received afterwards.
+
+### Go-Back-N (GBN)
+
+A pipelined protocol, where there can be multiple unacknowledged packets en-route from the sender to the receiver.
+
+The sender sends up to N packets without waiting for an ACK. N is the send window size, and depends on the delay-bandwidth product, receive buffer size and other factors. The receiver has an '*expectedseqnum*' which keeps track of the next expected sequence number to be received.
+
+If the receiver correctly receives packet *n* and *n*=*expectedseqnum* then ACK(n) is sent, which acknowledges all packets up to and including *n*. This is **cumulative ACK**. In all other cases (n!=expectedseqnum), the receiver discards the packet and sends ACK(n-1).
+
+![GBN diagram](GBN_diagram.png)
+
+### Selective Repeat (SR)
+
+SR is pipelined as well.
+
+The sender sends all packets inside the window. The SR receiver does not discard out of order packets if they are within the **receive window**. ACKs are individual, not cumulative and the sender selectively resends the packets with missing ACKs.
+
+![SR diagram](SR_diagram.png)
+
+### TCP reliable transfer protocol
+
+Each byte of data sent over TCP is numbered - the sequence number of a transmitted TCP segment (packet) is the byte number of the first data byte of the segment. E.g. if segments are 500 bytes, the 1st segment is seq0, 2nd is seq500, 3rd is seq1000, etc. 
+
+Only segments causing timeouts are retransmitted, otherwise the packet is buffered for later use.
+
+The TCP ACK number sent by the receiver is the next expected byte number and is cumulative, e.g:
+
+![TCP ack](TCP_ack.png)
+
+**Duplex communication:** In TCP, ACK can piggyback on data segments and don't require their own packet. To reduce transmissions, ACK is often sent with another segment that carries other data.
+
+![TCP duplex](TCP_duplex.png)
+
+Retransmission usually only occurs when an ACK isn't received in a certain time window after the packet was sent, and if an ACK isn't received within a certain time window after the ACK for the previous packet was received (assuming the packets were sent close together).
+
+![TCP retransmission](TCP_lost_packet.png)
+
+However, **TCP fast retransmit** means that upon receiving 3 duplicate ACKs requesting a segment previously sent, the TCP sender retransmits that segment without waiting for the timeout.
+
+![TCP fast retransmit](TCP_fast_retransmit.png)
 
 # HTTP (Hyper Text Transfer Protocol)
 
@@ -245,3 +344,24 @@ protocol: 8bits/1byte, describes protocol of the next layer
 
 addresses: 32bits/4bytes, the IPv4 addresses of computers traversed between
 
+# Cyber Attacks
+
+## SYN Attack
+
+![SYN attack diagram](syn_attack.png)
+
+## ARP cache poisoning
+
+ARP: Address Resolution Protocol
+
+Header reminders: source and destination IP addresses do not change in a packet. The MAC addresses change with each hop between nodes in the network, as these identify network interfaces.
+
+The network header contains the destination IP address, which can then identify the IP address of the node which the packet should be sent to on the next hop, but not the MAC address. The router must be able to identify this MAC address to add to the link header. This is done through ARP.
+
+The router broadcasts an ARP request to all interfaces it is connected to, asking which interface has the IP address that it needs.
+
+![ARP request packet](ARP_request_packet.png)
+
+The node with the correct IP address then sends an ARP reply packet with data stating that it is the node with that IP address. This mapping of IP to MAC is then stored the ARP cache for future use.
+
+ARP also allows unsolicited replies (no request necessary) to allow for IP address changes. An attacker can poison the ARP cache by sending unsolicited ARP replies claiming to be other nodes, routing packets meant for another node to them instead.
