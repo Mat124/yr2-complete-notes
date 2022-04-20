@@ -144,9 +144,64 @@ TCP provides reliable and in-order data transfer (lost packets are resent and pa
 
 ### Flow Control
 
+Data in the pipeline and buffer should not exceed the buffer size or packet loss may occur from buffer overflow.
 
+TCP controls the amount of data sent by sending the amount of free buffer space to the sender in packet headers, the **rwnd** section. The sender then limits the amount of unacked (no ACK received) data sent to under the **rwnd** value:  
+*LastByteSent - LastByteAcked <= rwnd*
 
-### Congestion Control
+![RWND diagram](rwnd_tcp.png)
+
+### Congestion and Congestion Control
+
+Congestion at a router occurs when input rate > output rate, primarily caused by senders sending packets too fast. Causes lost packets (buffer overflow) and long delays (queueing in buffer).
+
+**Delay:** Assuming routers have infinite buffers, the packet delay can become infinite if input rate exceeds output rate for an infinite amount of time.
+
+![Networks with Loops](networks_with_loops.png)
+
+Congestion collapse occurs when λ > c/2, leading to λ'' decreasing exponentially. As λ -> infinite, λ'' -> 0.
+
+![Congestion Collapse](congestion_collapse.png)
+
+**Congestion Control:**
+
+Controls the rate of transmission according to the level of perceived congestion: reduce losses and latency by stopping congestion collapse from occurring and attempting to ensure all nodes have a 'fair' share of network resources (no source have 0 throughput).
+
+TCP detects congestion through losses and delays: TCP senders assume congestion when timeout occurs or 3 duplicate ACKs are received.
+
+TCP send window size determines the transmission rate: if window size is *W* bytes, then transmission rate is roughly W/RTT Bps as time to send W is typically negligible and the sender must wait for an acknowledgement to send more data.
+
+**Maximum Segment Size (MSS):** max size of a TCP segment, determined by the max frame size from link layer protocol: TCP segment size = frame size - sum of header size.
+
+Number of segments that can be transmitted in a window = W/MSS rounded down to the nearest integer.
+
+The sender has a congestion window size (**cwnd**) where W = LastByteSent - LastByteAcked <= min(cwnd, rwnd) (for rwnd see *flow control*). Assuming cwnd < rwnd: rate ~= cwnd/RTT Bps.
+
+**cwnd** is a dynamic function of perceived network congestion using additive increase multiplicative decrease (AIMD):  
+
+- **additive increase:** increase **cwnd** by 1 MSS every RTT until loss occurs
+- **multiplicative decrease:** multiply **cwnd** by 0.5x after a loss
+- ![AIMD diagram](AIMD_congestion_control.png)
+
+AIMD is used over MIMD/AIAD (multiplicative and additive for both) as it tends to achieve a fair rate allocation among competing flows - linear increase and then proportional decrease tends to equal bandwidth sharing as flows with larger starting share are reduced proportionally more.
+
+![AIMD bandwidth sharing](AIMD_bandwidth_sharing.png)
+
+Convergence of AIMD is slow and so is the initial buildup of throughput. To avoid waiting a long time before reaching maximum rates, TCP uses a *slow start phase* where the **cwnd** is increased exponentially from a small value until it reaches a threshold **ssthresh** or a loss occurs.
+
+e.g. number of segments doubles each time, ssthresh=4 and cwnd=1MSS at the beginning:
+
+![slow start phase](slow_start_phase.png)
+
+**Action on loss indicated by timeout (serious response):**
+
+- ssthresh=0.5cwnd, cwnd=1MSS
+- enter slow start phase
+
+**Action on loss indicated by 3 duplicate ACKs (mild response):**
+
+- ssthresh=0.5cwnd, cwnd=0.5cwnd
+- enter linear increase
 
 ### Reliability
 
@@ -258,6 +313,148 @@ Retransmission usually only occurs when an ACK isn't received in a certain time 
 However, **TCP fast retransmit** means that upon receiving 3 duplicate ACKs requesting a segment previously sent, the TCP sender retransmits that segment without waiting for the timeout.
 
 ![TCP fast retransmit](TCP_fast_retransmit.png)
+
+# Network Layer
+
+## Main functions
+
+Move packets from a source node to end node through intermediate nodes. The network layer runs in end hosts and routers (not switches).
+
+One of the main protocols running in network layer is IP (internet protocol). The IP performs different functions at different nodes:
+
+- **IP at source:** Adds IP header, containing src & dest IP addresses, to transport layer segments and sends to link layer
+- **IP at routers:** Checks dest ip address of each packet to decide next node to send packet
+- **IP at destination:** Receives packet, strips IP header and delivers remaining packet to transport layer
+
+IP fragments oversized packets and reassembles them at the destination.
+
+IP runs routing protocols (RIP, OSPF) to compute best route for each packet
+
+## Network layer at router functions
+
+**Forwarding** - moving packets from router's input to appropriate output queue, based on destination IP and routing table
+
+**Routing** - constructing a routing table from a routing protocol, mapping destination IP to output link.
+
+### Routing tables (more info further down)
+
+2^32 (IPv4) IP addresses - impractical to keep individual entry for each, and many IPs map to the same outgoing link (especially if they are close both physically and in IP address).
+
+Therefore, each entry maps a range of IP addresses to a link interface, and the range is defined by the address prefix, the starting bits of the address, e.g. Range = 11001000 00010\*\*\* \*\*\*\*...
+
+Ranges can overlap however - so how to decide which entry to use?
+
+- Longest prefix matching - use the longest address prefix that matches the destination
+- ![routing table](routing_table.png)
+- Address 11001000 00010111 00011000 00000000 goes to link 1, even though it also matches link 2
+
+## IP addressing and subnets
+
+### Subnets
+
+IP addresses are 32 bits - 4 bytes. IP addresses of computers in the same subnet have the same prefix - the same subnet mask, e.g. 223.1.1.1, 223.1.1.2, 223.1.1.3 have the subnet mask 223.1.1.x. Interfaces (internet enabled devices) belonging to the same subnet can communicate directly without a router, using a switch and MAC addresses to forward link layer packets.
+
+The subnet mask of a device is specified at the same time as IP address assignment, by giving the amount of bits used in the subnet mask: denoted by Classless Inter-Domain Routing (CIDR), notation: a.b.c.d/x where x = subnet mask length in bits.
+
+- When sending a packet, the sender checks if the destination IP has the same subnet mask and if so:
+  - Obtains the MAC address of destination using ARP
+  - Creates a link layer frame with the destinations MAC
+  - Forwards the packet directly to destination (perhaps including switches)
+- If sender and destination are in different subnets
+  - The sender forwards the packet to its default gateway, a router that connects subnets to other subnets
+  - This router can then send the packet to the correct subnet, where a switch will forward it the correct device
+
+### IP address assignment
+
+2 ways:
+
+- Manually configured by network admin
+  - Used only in small networks as otherwise too difficult
+  - Sets both the IP address and subnet mask
+  - UNIX based systems store the network config in a system file, e.g. /etc/rc.config
+- Dynamic Host Configuration Protocol (DHCP)
+  - Application layer protocol that dynamically assigns IP address from a server (typically the gateway router) to clients (nodes trying to connect to the subnet)
+  - Given subnet mask by the server
+
+### Subnet assignment
+
+Each network is allocated a block of IP addresses by an ISP, with the length of the subnet mask included in the allocation, and global authority ICANN allocates IP addresses to ISPs in a similar way.
+
+Example:
+- ISP given block with 2^12 addresses
+- ![ISP IP assignment](isp_IP_assignment.png)
+- ISP allocates all IP addresses to 8 organisations, giving each 2^9 addresses so 2^9 network interfaces
+- ![Organisation IP assignment](isp_IP_assignment_organisations.png)
+
+## Network Address Translation (NAT)
+
+Invented to handle the issue of short supply IPv4 - only 4 billion network interfaces can have unique IP addresses and there are far more than 4 billion devices.
+
+### **How NAT works:**
+
+- Globally unique public IPv4 addresses are only provided to gateway routers (routers between the end nodes and internal internet)
+- Assign private IPv4 addresses to network interfaces which are unique within a subnet
+  - Devices in home/private networks do not need to be visible to public internet, so use private IPv4 addresses to communicate with each other
+  - Private IP addresses range from
+    - 10.0.0.0 - 10.255.255.255
+    - 172.16.0.0 - 172.31.255.255
+    - 192.168.0.0 - 192.168.255.255
+  - Packets addressed to these IP addresses will not be forwarded by the public internet
+- The gateway router that faces the rest of the internet has a private IP address which is used by network interfaces connected in the LAN and a globally unique public IP address used by the wider internet.
+- NAT enabled gateway routers change the source IP on a packet destined for the internet to the unique public IP address of the gateway router - replies are then sent to the public IP of the gateway router
+- Port numbers are used to distinguish between intended devices - requires a NAT translation table
+  - ![NAT translation table](NAT_translation_table.png)
+  - Source was 10.0.0.1, 3345 and NAT changed it to 138.77.29.7, 5001
+
+### **Issues with NAT:**
+
+Port numbers are designed to be used to identify processes not hosts - misuse of the technology. There are also limited port numbers which can be used up if there are many devices with many network applications in use. The IPv4 address shortage has a 'proper' solution: using IPv6 instead, which has 2^128=3x10^38 addresses and is supported by all modern devices.
+
+## Routing
+
+There are multiple protocols that implement different routing algorithms, we focus on Dijkstra's algorithm and distance-vector algorithm.
+
+The graph abstraction of a WAN:
+
+- G = (N,E)
+- N = set of routers = {u, v, w, x, y, z}
+- E = set of links = {(u, v), (u, x), ...}
+- Each edge (x, y) has a cost c(x, y) associated, e.g. c(u, v) = 2 and non-existant edges have infinite cost
+- Cost of path (x1, x2, x3, ..., xn) = c(x1, x2) +c(x2, x3) + ... + c(xn-1, xn)
+- Given source x and dest y, what is the least cost path from x to y?
+
+There are two types of routing algorithm:
+
+- **Global/Link State** - each node requires knowledge of entire topology of graph and the costs
+- **Local** - each node only requires knowledge of their neighbours
+
+### **Dijkstra's algorithm (global/link state)**
+
+Computes least cost path from a source node to every other node in the graph.
+
+- Used in Open Shortest Path First (OSPF) protocol
+- Each node gets required info through broadcasting of link costs (link states)
+  - Each node broadcasts the cost of each link connected to it to all other nodes in the network
+- ![dijkstras](dijkstra_algorithm.png)
+
+### **Distance vector (DV) algorithm (local)**
+
+- DV is implemented in the Routing Information Protocol
+- Based on the Bellman-Ford equation
+  - dx(y) = length of shortest path from x to y
+  - Relates dx(y) to dv(y) where v is a neighbour of x
+  - The path from x to y must traverse from x to one of its neighbours v
+  - ![dx calculation](dx_dv_algorithm.png)
+  - If v\* minimises dx(y), then v\* is the next node in the shortest path from x to y
+  - ![DV diagram](dv_diagram.png)
+  - Calculated recursively - in calculating du(z), dx(z) is calculated, which  requires calculating dw(z), etc
+- Each node x keeps a current estimate of the distance to each node y, given by Dx(y)
+- DV attempts to converge estimates with actual values
+- Each node x keeps distance vector Dx = [Dx(y) for all nodes y]
+- Each node x updates and broadcasts to its neighbours Dx(y) and subsequently Dx each time
+  - Cost to a neighbour c(x, v) changes
+  - Distance vector of a neighbour Dv changes
+  - ![DV update flow](DV_update_flow.png)
 
 # HTTP (Hyper Text Transfer Protocol)
 
