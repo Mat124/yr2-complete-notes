@@ -470,7 +470,7 @@ Handling deadlocks:
 - Avoiding deadlocks
   - Less restrictive than deadlock prevention
   - Determines if a request should be granted based on if resulting allocation is a safe state
-  - Safe state is where a deadlock can never occur, no matter the future requests
+  - Safe state is where there is no set of future requests where a deadlock is unavoidable no matter how resources are allocated in response
   - The avoidance algorithm needs information on specific requirements of each process
     - Stated by each process - max number of instances of each resource type is needs
     - When a resource request is received, the deadlock avoidance algorithm checks if granting resource leaves system in a safe state
