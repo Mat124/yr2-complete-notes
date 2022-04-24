@@ -247,6 +247,8 @@ A region of memory shared by communicating processes is created. This shared mem
 ![Shared memory between processes](Process_shared_memory.png "Shared process memory")
 ![Shared memory between processes](Process_shared_memory_2.png "Shared process memory")
 
+This doesn't work with memory paging, as page tables are generated based on the memory allocated to a process and cannot change.
+
 ### **Message passing**
 
 Messages are directly exchanged between the processes using a communication channel provided by the kernel, e.g. a buffer. Processes use system calls to read/write to the buffer. This simplifies job of programmer (as the OS programmer already wrote the hard bit) but has a larger overhead due to many system calls.
