@@ -1,8 +1,11 @@
+# Exam stuff
+
+- will be given a formula sheet with *some* equations on it but not all
+- remember to convert units - e.g. Celsius to Kelvin, cm3 to m3, etc
+
 # Topics
 
-## Carrier Action
-
-### Minority Carrier diffusion equations
+## Minority Carrier diffusion equations
 
 - All information given is an input to the equation.
 - Pay attention to the units - often mixed up
@@ -19,3 +22,19 @@
 - need to be good at manipulating the simple eqiuations like mobility, diffusion coeddicition, current density etc
 - standard formula for band energy formula
 - use hbar not h
+- occupancy is found using the fermi distribution
+- light mass materials quantize into subbands faster
+
+## Density of States
+
+- find total DOS by summing in each direction and equate to equation for a general DOS
+
+## Conductivity
+
+- conducitivity effective mass is summed like resistance and then averaged
+  - e.g. 1/m = (1/m1 + 1/m2 + 1/m3) / 3
+
+## Thermoelectrics
+
+- phonons react differently to structure compared to electrons - electrons typically unaffected
+- 
