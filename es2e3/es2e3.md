@@ -59,6 +59,8 @@ Equal number of input and output bits where there is an order of priority for th
 
 **Sequential Logic:** inputs and memory are combined to create the output. Previous inputs affect the current output.
 
+## Basic Sequential Circuits
+
 ### SR-type latch
 
 The simplest circuit for storing one bit of data. Setting R high sets the output to 0, setting S high sets the output to 1, setting both high sets Q and Q' to 0, setting both low retains Q and Q' from the previous output.
@@ -98,4 +100,43 @@ Shift-registers are a chain of flip-flops passing data from one to the next at e
 Formed by connecting whole registers in the shift-register pattern - a multibit input/output shift-register.
 
 ![FIFO_buffer](FIFO_buffer.png)
+
+### Counters
+
+Generates a sequence of outputs, typically a rising/falling sequence of binary numbers changing by 1 each time.
+
+![counter](counter.png)
+
+### Synchronous Memory
+
+To store more data, multiple registers share an output data line. Addressing inputs signals allow different registers to be accessed and connected to the output data line. An address signal with N bits can differentiate between 2^N registers/memory locations using a decoder.
+
+![Synchronous Memory](synchronous_memory.png)
+
+![Synchronous memory with bits](memory_bit.png)
+
+## Clocks
+
+Oscillate between 0 and 1 at a fixed frequency. The period of the clock is the time to complete 1 cycle - the time between rising edges. The oscillations are often created using an external crystal oscillator. For low-level digital design there is typically a single clock in the system that all sequential components use. For more complex designs, there is a single source clock which is then used to generate multiple clock signals to allow for sequential circuits to have different frequencies.
+
+# Verilog
+
+Verilog is a hardware description language - code which describes logical functions which are implemented using LUT in an FPGA. Designs are broken into modules, separate files that encapsulate some functionality. The modules can create instances of other modules for use within the module, with good designs having levels of hierarchy.
+
+### Modules
+
+Each module is declared with the `module` keyword and a list of ports - the inputs/outputs to the module.
+
+## Verilog Basics
+
+**Identifiers:** Names of modules, signals, ports, registers, etc. They must start with a letter, can contain letters, numbers and underscores and can't be the same as a keyword.
+
+### Gates
+
+The basic gates are inbuilt to verilog: `and`, `or`, `not`, `nand`, `not`, `xor`, `xnor`. These are called using their names, typically in the form:
+`and andgate1 (outputwire1, inputwire1, inputwire2);`
+
+Verilog multiplexer example:
+
+![multiplexer verilog example](multiplexer_verilog.png)
 
