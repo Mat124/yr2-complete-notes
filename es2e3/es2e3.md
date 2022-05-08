@@ -348,7 +348,16 @@ Ripple adders can only be clocked as fast as the signal can propagate down the c
 
 ### Carry-lookahead adders
 
-Carry-lookahead adders attempt to fix the issue of propagation delay in ripple adders.
+Carry-lookahead adders attempt to fix the issue of propagation delay in ripple adders. This is done by introducing two more signals at each stage: *generate* and *propogate*. *generate* is true if the stage will be produce a carry no matter what the carry in is, i.e. both operands are 1. *propogate* is true if the stage produces a carry if carry in is 1, i.e. either/both operands are 1. \
+For stage i: \
+g<sub>i</sub>=a<sub>i</sub>&b<sub>i</sub> \
+p<sub>i</sub>=a<sub>i</sub>|b<sub>i</sub> \
+Therefore, the carry out of stage i is: co<sub>i</sub>=g<sub>i</sub>|(p<sub>i</sub>&ci<sub>i</sub>)
+
+We can use this to calculate the carry out at any stage using the propagate/generate signals from the previous stages: \
+![carry lookahead calc](carry_lookahead_calculation.png)
+
+Logic to calculate the carry bits can then be implemented. This the delay from 4 adder stages to a single adder stage and 
 
 # Verilog Verification and Testing
 
