@@ -352,12 +352,61 @@ Carry-lookahead adders attempt to fix the issue of propagation delay in ripple a
 For stage i: \
 g<sub>i</sub>=a<sub>i</sub>&b<sub>i</sub> \
 p<sub>i</sub>=a<sub>i</sub>|b<sub>i</sub> \
-Therefore, the carry out of stage i is: co<sub>i</sub>=g<sub>i</sub>|(p<sub>i</sub>&ci<sub>i</sub>)
+Therefore, the carry out of stage i is: co<sub>i</sub>=g<sub>i</sub>|(p<sub>i</sub>&ci<sub>i</sub>) \
+![carry lookahead adder 4bit](carry_lookahead_adder_4bit.png)
 
 We can use this to calculate the carry out at any stage using the propagate/generate signals from the previous stages: \
 ![carry lookahead calc](carry_lookahead_calculation.png)
 
-Logic to calculate the carry bits can then be implemented. This the delay from 4 adder stages to a single adder stage and 
+Logic to calculate the carry bits can then be implemented. This means that the delay from the first carry in to carry out is reduced from going through all adder units to a single adder unit (all of them finish in parallel) and the delay from the lookahead carry unit. \
+![lookahead carry unit 4 adders](lookahead_carry_unit_4_adders.png)
+
+Smaller carry lookahead adders are combined to make larger ones, as the circuitry for >4 bit lookahead carry units become very complex. Combining 4 carry lookahead adders of 4 bits with a 4-bit lookahead carry unit creates a 16-bit carry lookahead adder. \
+![carry lookahead adder 16bit](carry_lookahead_adder_16bit.png)
+
+### FPGA adders
+
+Carry logic in an FPGA typically mimics a carry lookahead adder.
+
+- *S*: propagate signals
+- *DI*: generate signals
+- *CYINIT*: first carry in
+- *O*: outputs
+- *CO*: carry outs for each bit
+
+![FPGA adder](FPGA_carry_adder.png)
+
+## Multipliers
+
+Binary multiplication is done similar to decimal long multiplication: moving the starting point further above the base depending on the place of the multiplying bit, then multiplying each bit in the other number by the multiplying bit: \
+![binary multiplication](binary_multiplication.png)
+
+Multiplication in circuits can be done using long chains of adders. The inputs to the adders are the partial products of the multiplication numbers: e.g. S<sub>50</sub> = A<sub>5</sub>&B<sub>0</sub>. \
+![fpga multipliers](FPGA_multipliers.png) \
+This type of multiplication has extremely long propagation delays. This can be fixed in FPGAs by using LUTs that are prefilled with outputs instead of using adder chains. Wide multiplications too large for LUTs are mapped to DSP blocks, or multiple DSP blocks as these are designed for efficient multiplication.
+
+## Fixed point binary
+
+A binary point is placed at a fixed location within the number - powers of 2 to the left of the point start at 0 and increase (integer section), powers of 2 to the right of the point start at -1 and decrease (fractional section). \
+![fixed point binary](fixed_point_binary.png) \
+There is no fixed notation for stating the position of the binary point, so words are used to express the format. Fixed point binary can also be signed, where the first bit has negative weight. Only certain numbers can be expressed exactly in a given fixed point format, so this introduces some error to calculations using fixed point that can be minimised by selecting an appropriate format.
+
+The integer section determines range, e.g. 4 int bits give a range of 0-15, and the fraction section determines precision, e.g. 6 fractional bits can represent values to 2<sup>-6</sup> = 0.015625. Changing the distribution of integer to fractional bits allows greater range or precision for the same total bits.
+
+Addition/Subtraction: binary point stays where it is, may need extra bit for overflow \
+Multiplication: multiplying an *m*-bit number with *n* fractional bits by a *k*-bit number with *j* fractional bits gives an *m+k* bit number with *n+j* fractional bits. \
+**it is very important to keep track of where the integer and fractional parts are**
+
+### Decimal to fixed point conversion
+
+1) Multiply the number by 2<sup>I</sup> where *I* is the number of fractional bits
+2) Round the result to an integer
+3) Convert the integer to binary in the standard way
+4) Use the binary representation of that number as the fixed point representation, remembering the position of the binary point
+
+### Fixed point in Verilog
+
+Verilog doesn't support fixed point natively, instead the programmer must keep track of the binary point positions. Vector slicing can then be used to choose the correct bits. Most numbers in verilog are treated as unsigned regular binary, and the binary operations act as though performed on numbers in that format.
 
 # Verilog Verification and Testing
 
