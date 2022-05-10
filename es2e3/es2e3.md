@@ -326,7 +326,7 @@ All assignments made create registers on the FPGA. These are then linked togethe
 
 # Verilog Arithmetic
 
-FPGAs are used primarily for complex computation applications with high data throughput, large arithmetic operations and parallel processing requirements.
+FPGAs are used primarily for complex computation applications with high data throughput, large arithmetic operations and parallel processing requirements. Design tools take care of many implementation details, but the designer is responsible for: decomposing complex expressions into synthesisable operands, managing registers to optimise performance, aligning and interpreting fixed point arithmetic, manual floating point operations, etc.
 
 ## Binary
 
@@ -407,6 +407,32 @@ Multiplication: multiplying an *m*-bit number with *n* fractional bits by a *k*-
 ### Fixed point in Verilog
 
 Verilog doesn't support fixed point natively, instead the programmer must keep track of the binary point positions. Vector slicing can then be used to choose the correct bits. Most numbers in verilog are treated as unsigned regular binary, and the binary operations act as though performed on numbers in that format.
+
+## Signed arithmetic in Verilog
+
+The `signed` keyword is put after wire/reg and before the identifier to indicate the signal is signed, allowing for negative number representation. \
+![signed nums verilog](signed_numbers_verilog.png) \
+When arithmetic is applied to the signals, signed circuits will be used. However, if any operand (including output) in an operation is unsigned the arithmetic circuit used will be unsigned, which could lead to an incorrect output. Verilog automatically does sign-extension for signed signals, which can lead to unexpected results. \
+![sign extension verilog](sign_extension_verilog.png) \
+In the case above, the 8 bit number inputted to the `max_val` reg is assumed to be signed - giving it negative value, so the preceding bits are set to 1 to keep the value the same. In the case where the MSB of the input was 0, the preceding bits would also be set to 0.
+
+The functions `$signed()` and `$unsigned()` can cast numbers to signed/unsigned. This is not done intelligently however, so if the MSB of an unsigned number is 1 and it is cast to signed, the output will be negative. The same goes for casting a negative signed number to unsigned - the output will not be accurate as it cannot be represented. \
+![signed casting verilog](signed_casting_verilog.png) \
+Unsigned numbers should always be 0 extended to ensure they do not become negative to avoid accidental incorrect casting.
+
+Signed numbers in verilog can be truncated from the MSB down until the 2nd MSB is different from the MSB, e.g.: \
+![signed truncated numbers](truncated_signed_numbers.png)
+
+**Verilog will create warnings for truncated numbers, but will still synthesis without errors.**
+
+## Floating point numbers (IEEE-754)
+
+32-bit numbers consisting of a sign bit, 8 exponent bits and 23 mantissa bits. This number then has the value: (-1)<sup>sign</sup> * mantissa * 2<sup>exponent-127</sup>. Not all numbers can be accurately represented. \
+![floating point](floating_point_representation.png)
+
+This can be thought of as the exponent determining which powers of two the window covers: e.g. between [1, 2], [2, 4], [4, 8], ..., [2<sup>20</sup>, 2<sup>21</sup>], etc. The mantissas determines where in the window the number is. Larger exponents mean that the mantissa covers a greater range with the same amount of bits - less accurate.
+
+Floating point arithmetic circuits are large and complicated, each computation can require realignment of operands, arithmetic and normalisation. There is no direct support for floating point calculations in Verilog, but IP blocks exist to allow for it. However, floating point calculations are not often needed.
 
 # Verilog Verification and Testing
 
@@ -491,3 +517,47 @@ Verification of very complex designs, e.g. large multi-processor system-on-chip 
 - Predicting effects of scenarios like cache misses
 
 Testing during design can help to reduce amount of testing required and make testing easier. Means that less time will be needed fixing large logic errors after the full system is designed and no previous parts need to be completely changed.
+
+# Finite state machines
+
+## Sequence and States
+
+At each point in time, an FSM is in a **state** - the current values/description of the system. The system can then transition between states depending on **conditions**. \
+![adder fsm](adder_fsm.png) \
+Above is the state transition diagram of a basic 3 bit adder that loops. Each node is a **unique state** of the system and arrows show movement from one state to the next - there cannot be multiple nodes representing the same state.
+
+State transitions (**edges**) can have **conditions**, e.g. if an input is on or not, and be set to occur with a clock. \
+![enable adder fsm](enable_adder_FSM.png) \
+Loop edges are not always included - the diagram could instead show only the `en` condition transitions and it is implied that nothing happens (or it loops back to the same state) when `en` is not high.
+
+Example up/down adder using inputs `en` and `dn` in that order - conditions then show the values of the inputs. \
+![up/down adder](up_down_adder_FSM.png) \
+State names and outputs are given in the form `name/output` in most FSM (but not the ones shown so far).
+
+In synchronous design, the **FSM is in one state for the duration of each clock cycle and may transition at each rising clock edge**.
+
+### State tables
+
+State transition information can be represented in tables, effectively a truth table for the next state based on current state and inputs. \
+![state table](state_table.png) \
+This table represents the following FSM. \
+![state table FSM](state_table_FSM.png)
+
+## Mealy machines
+
+The FSMs seen so far are **Moore Machines** - the output only depends on the state. **Mealy Machines** have outputs that depends on the state and current value of the inputs - the outputs can change mid-state if the inputs change. This allows for more complex FSMs to be created without adding many more states, at the cost of them being harder to design and analyse.
+
+Mealy machines have the outputs on the arrows after a slash after the inputs that caused the change. An example of a Mealy machine implementing the output of x=1 3 times after b=1 once: \
+![mealy machine simple](mealy_machine_simple.png)
+
+Both the below FSMs have the same function: outputs a 1 when the last two inputs were 0,1 in that order: \
+![moore vs mealy](moore_vs_mealy_fsm.png)
+
+## Implementation
+
+Using a state table, a combinatorial circuit that determines the next state from current state and inputs can be built. A register holds the current state and another combinatorial circuit can be built that creates the correct output given the current state. \
+![implementing fsm](implementing_fsm.png)
+
+The general implementation of a FSM changes depending on whether it is Moore or Mealy: \
+![moore mealy FSM iomplementation](moore_mealy_FSM_implementation.png)
+
