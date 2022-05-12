@@ -553,7 +553,7 @@ Mealy machines have the outputs on the arrows after a slash after the inputs tha
 Both the below FSMs have the same function: outputs a 1 when the last two inputs were 0,1 in that order: \
 ![moore vs mealy](moore_vs_mealy_fsm.png)
 
-## Implementation
+## Basic Implementation
 
 Using a state table, a combinatorial circuit that determines the next state from current state and inputs can be built. A register holds the current state and another combinatorial circuit can be built that creates the correct output given the current state. \
 ![implementing fsm](implementing_fsm.png)
@@ -561,3 +561,97 @@ Using a state table, a combinatorial circuit that determines the next state from
 The general implementation of a FSM changes depending on whether it is Moore or Mealy: \
 ![moore mealy FSM iomplementation](moore_mealy_FSM_implementation.png)
 
+### State Encoding
+
+State encoding in verilog is used to store the current state in a binary register as opposed to using state names. A unique binary value is assigned to each state (this can be done using **parameters**), so a *m* state machine requires log<sub>2</sub>(m) bits. For 8 states, a register `reg [2:0] s` could be used.
+
+### Transition Logic
+
+State transition logic can be implemented using logic gates. Given a FSM with 4 states, the current state stored in `[1:0]s` and the next state stored in `[1:0]ns` we can construct logic which matches the state table: \
+![state transition logic](state_transition_logic.png) \
+This can be done by inspection, or using a karnough map or similar method.
+
+The verilog implementation of the FSM described by the above state table is: \
+![verilog fsm iomplememntation](verilog_fsm_implementation.png) \
+The `always` block updates the state register with the next state value, and combinational assignments handle finding the next state value and output.
+
+Ensure that a FSM **always has a reset and valid initial state**. If this is missing, the FSM may start in an invalid state and won't act predictably.
+
+## Complex FSM Implementation
+
+For FSMs with many states and inputs, e.g. 6 states and 5 inputs, behavioural verilog can be used instead of combinational logic to make the designer's job easier. States are encoded the same way as before and the state transition can still occur inside a clocked `always` block as before. This general structure is shown below: \
+![general FSM implementaiton](general_fsm_implementation.png)
+
+The next state logic is then implemented using `case` and `if` statements. This is faster to design than attempting to derive combinational logic for the state transition, and the synthesis tools in verilog will make similarly efficient implementations. The output logic can also be designed using behavioural verilog, inside the same always block as state logic. \
+![verilog behavioural state transitions](verilog_behavioural_state_transitions.png) \
+The verilog shows example behavioural code for state transitions of the lock from earlier, where the correct sequence of coloured buttons must be pressed.
+
+### Complex FSM Implementation other notes
+
+- Possible to write the whole FSM in a single synchronous `always` block - hard to verify so easier to use multiple.
+- **ensure that resets change the state register to a valid state**
+- A next state must be assigned in every case - undefined behaviour will arise if not
+- default next state/output assignment at the top of the state transition block can help minimise the number of statements
+
+# FPGAs
+
+Everything designed using a HDL (like verilog) is built out of basic circuit components, which are eventually built of transistors.
+
+## ASICs vs FPGAs
+
+### ASICs
+
+Design is built using specific circuit components using a fabrication process. Masks are created by the tools which are then used to layer and etch the circuit boards.
+
+- high startup costs, masks alone from $100k-1M
+- detailed design effort to optimise performance (specific sizes of components and tolerances etc)
+- significant risk if design has errors: could require completely new mask
+- cant modify design without new mask
+- low production costs once started
+
+### FPGAs
+
+Reprogrammable, uses LUT (look up tables) to simulate a lot of circuit components, as well as having other general circuitry. 
+
+- low startup costs, as general boards dont have to be custom made
+- high cost per board compared to ASICs
+- easily reprogrammable and good for prototyping
+
+### Cost tradeoffs
+
+![fpga asic costs](fpga_asic_costs.png)
+
+## FPGA Architecture
+
+A flexible chip that can implement many different circuits. Knowledge of the low-level implementation of FPGAs are essential to achieve very efficient designs.
+
+FPGAs contain 4 distinct types of resource that allow them to implement many different circuits:
+
+- **flexible logic:** basic configurable blocks (CLBs) to implement comb logic with clocked elements for synch logic and pipelining
+- **flexible routing:** large chip area dedicated to wires/switch boxes to enable connections between different components
+- **flexible IO:** multi-standard interfacing to external pins, range of clocking capabilities
+- **embedded hard modules:** number of different resources with specific purpose, e.g. DSP functions, high-speed memory
+
+example FPGA chip architecture: \
+![general fpga architecure](FPGA_example_architecture.png)
+
+### CLBs (Configurable Logic Blocks)
+
+These implement almost all computations required on FPGAs. They consist of a LUT to do combinational functions, some auxiliary arithmetic logic and a flip-flop for synchronous logic. \
+![CLB structure](CLB_structure.png)
+
+### Xilinx Logic Architecture
+
+LUTs grouped in 4s, called slices. These slices contain LUTs, clocked elements (like flip-flops) and arithmetic logic. The pieces can be used individually or together depending on what needs to be done. These slices are then grouped together to form a CLB with a hierarchy of connections. \
+![xilinx clb](xilinx_clb.png)
+
+### LUTs
+
+An n-input LUT is a 2<sup>n</sup> x 1 bit memory block. The truth table of the logic function implemented is stored in the LUT: an input to the LUT is the memory location that stores the corresponding output. The propagation delay of the LUT is constant, not affected by the function it computes.
+
+![lut logic function](lut_logic_function.png) \
+The function above has it's truth table computed at synthesis, which is then stored in a LUT when written to an FPGA instead of attempting to simulate gates.
+
+Modern LUTs have 6 inputs, giving 64 memory locations. This can be used to implement a single 6-input function, 2 x 5-input (all shared) functions, 2 x 3-input (all independent) functions, etc. LUTs can also be combined to form 7+ input functions.
+
+As LUTs are memory blocks, they can act as *distributed RAM*. This is synchronous write and can be used with the flip-flops in CLBs to create synchronous read, improving timing. Multiple RAM configurations can be achieved: 64x1bit single port using 1 LUT, 64x1bit dual port or 128x1bit single port using 2 LUTs, etc.
