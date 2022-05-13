@@ -609,7 +609,7 @@ Design is built using specific circuit components using a fabrication process. M
 - cant modify design without new mask
 - low production costs once started
 
-### FPGAs
+### FPGA
 
 Reprogrammable, uses LUT (look up tables) to simulate a lot of circuit components, as well as having other general circuitry. 
 
@@ -655,3 +655,26 @@ The function above has it's truth table computed at synthesis, which is then sto
 Modern LUTs have 6 inputs, giving 64 memory locations. This can be used to implement a single 6-input function, 2 x 5-input (all shared) functions, 2 x 3-input (all independent) functions, etc. LUTs can also be combined to form 7+ input functions.
 
 As LUTs are memory blocks, they can act as *distributed RAM*. This is synchronous write and can be used with the flip-flops in CLBs to create synchronous read, improving timing. Multiple RAM configurations can be achieved: 64x1bit single port using 1 LUT, 64x1bit dual port or 128x1bit single port using 2 LUTs, etc.
+
+### Routing
+
+Large grids of wires run throughout the FPGA. Connection boxes allow different elements to connect to this network. Switch boxes connect different tracks together to form working connections between elements.
+
+Routing affects performance of a system by reducing the maximum clock frequency as the amount of switch boxes used increases. Dedicated wires between blocks are faster, but more specific and can't be used everywhere due to size. Individual bits of a multi-bit signal can take different routes, in which case the worst case matters most. Different lengths of wire in different directions are used to help improve performance, changing the pattern of amount of switches between blocks: \
+![routing switches](routing_switches.png)
+
+### IO
+
+FPGAs have flexible IO: individual groups/banks of pins can be interfaced with using multiple different standards set during design (usually done by IP blocks). As well as bare pins, FPGA boards can sometimes have physical ports for standards like ethernet, SATA, PCIe, etc. IP blocks are still required to configure them, but allows for easier physical connections.
+
+### Block Memory
+
+LUTs can act as RAM, but dedicated block RAM is also typically provided in FPGAs. These can be simple dual port (dedicated read/write) or true dual port (both can perform read/write). Multiple blocks of RAM can be combined to form a larger RAM section. This RAM can have different widths/clocks for each port and has a standard speed of 10s Mbits.
+
+### DSP blocks
+
+FPGAs contain hardwired DSP blocks, suitable for multiply/add operations and much faster than LUTs. While hardwired, they are still configurable and can change pipeline stages, ALU functionality, introduce bypasses, combine with other DSP for cascading signals, do pattern recognition, etc.
+
+# Digital Design Flow
+
+Process by which we specify and design a digital system through to final implementation. 
