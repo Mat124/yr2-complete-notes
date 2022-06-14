@@ -644,5 +644,74 @@ III-Nitrides cover green+ and UV \
 ![led materials](images/led-materials.png) \
 use dome to prevent TIR and textured surface to prevent TIR.
 
-## LED light emission or LED spectrum of light output
+## LED light emission or LED spectrum of light output or electron energy distribution
+
+![elec energy dist](images/electron-energy-dist.png) \
+![light emission spectrum](images/light-emission-spectrum.png) \
+![light emsssion temp dependence](images/light-emssion-temp-dependence.png) \
+
+## Diode lasers
+
+particle in upper state reacts with photon matching energy seperation of levels, the particle decays and releases another photon in the same phase and frequency as incident photon - stimulated emission. \
+requires population inversion - most electrons are excited, done using another optical source or by carrier injection - extreme doping so that fermi level is inside conduction band. \
+This is a degenerate material, cant use boltzmann statistics: \
+![degen semi](images/degernate-semicond.png) \
+feedback needed to make laser - add mirrors at each end.
+
+## laser modes
+
+standing waves formed in lasers: \
+![laser](images/laser_standing_waves.png) \
+![laser](images/laser_standing_waves2.png)
+
+## double heterostructure laser diode
+
+![double het laser](images/double-het-laser.png)
+
+## seperate confinement heterostrucutres SCHs diode
+
+![schs](images/schs.png)
+
+## vertical cavity surface emitting laser VCSEL
+
+![vcsel](images/vcsel.png)
+
+## diode vs laser power
+
+![diode v laser pwoer](images/dioevlaserpwoer.png)
+
+## Hall Effect
+
+![hall effect](images/hall-effect.png) \
+hall field E<sub>H</sub>: \
+![hall field](images/hall-field.png) \
+hall field diagram: \
+![hall filed diagram](images/hall-field-diagram.png) \
+hall coefficient R<sub>H</sub>: \
+![hall coeff](images/hall-coefficiebnt.png)
+hall coefficient using drift mobility: \
+![hall coeff semi](images/hall-coefficient-semiconductors.png) \
+hall coeff with scattering effect: \
+![hall effect with scattering](images/hall%20-effect-with-scattering.png)
+
+used to measure magnetic fields, effective use in rotating systems and contactless sensors. Useful in vehicles, phones, current sensors, etc.
+
+## Wavefunction, Schrodinger's equation
+
+Describes dynamic behaviour of quantum system. \
+![schrodinger](images/schrodinger-equation.png) \
+![schrodigner 2](images/schrdinger2.png) \
+
+can become time independent: \
+![no time schrodinger](images/timeindependent-schrodinger.png)
+
+## interpretation of wave function: electron momentum, wavenumber, de broglie wavelength
+
+![wavefunction interpretation](images/wavefucntion_interpretation.png)
+
+## electron energy and electron kinetic energy
+
+![electron ke](images/electron-ke.png) \
+relating electron kinetic energy and velocity: \
+![electron ke and v](images/velocity-and-energy.png)
 
