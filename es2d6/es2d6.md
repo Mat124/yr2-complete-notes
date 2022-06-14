@@ -372,6 +372,9 @@ k = wavevector, 'direction' of wave. Momentum must be conserved, so when electro
 Left: direct bandgap, electrons in base of CB have same k as holes in top of VB. \
 Right: indirect bandgap, electrons in base of CB have different k to holes in top of VB.
 
+summary (no details): \
+![summary](images/recomb_process_summary.png)
+
 ### Radiative Recombination
 
 Needs direct bandgap, electrons move direct from bottom of CB to top of VB and keep the same k.
@@ -384,3 +387,195 @@ Electrons moves (is captured by) from CB to a SRH recombination centre between t
 Trapping: Similar to SRH, trapping centre takes in electron from CB and holds it, then releases it back to CB when excited. \
 ![trapping centre](images/trapping_centre.png)
 
+![srh recombination materials](images/SRH_recombination_materials.png)
+
+### Augur recombination
+
+Electron and hole have different k and recombine, energy from different k's is transferred to another electron which has an opposite change in k to the recombining electron. Energy is slowly lost by thermalisation. \
+![augur recomb](images/augur_recomb.png)
+
+## Minority Carrier Lifetime
+
+Rate of recombination of excess carriers is dependent on density of carriers, giving exponential behaviour of minority carrier lifetime. \
+![recomb summary](images/recomb_summary.png)
+
+### Transient photoconductivity
+
+G<sub>ph</sub> is the generation rate per unit volume caused by illumination. \
+![transient photo](images/transient_photocond.png)
+
+### Radiative recombination rate low level injection
+
+![readiative recomb rate](images/radiateve_recomb_rate.png) \
+In thermal equilibrium np = n<sub>i</sub><sup>2</sup>, so Re=Gth and net rate is 0.
+
+For doped semiconductors (swap n and p to get p-type): \
+![radiateive recomb rate](images/radiative_recomb_rate.png) \
+minority carrier lifetime inversely proportional to doping concentration
+
+### Shockley-Read-Hall recombination rate SRH recombination rate low level injection
+
+![srh net rate](images/srh_net_recomb_rate.png) \
+Et is SRH energy, Nt is number of SRH centres \
+Rate maxed for Et=Ei, mid-gap energies are most effective, assume this is true: \
+![srh ei=et rate](images/srh_rate_ei_is_et.png) \
+
+For doped semiconductors (swap n and p to get p-type): \
+![doped srh rate](images/doped_srh_rate.png) \
+n<sub>i</sub> is removed from bottom as n<sub>i</sub> << p/n in doped materials \
+minority carrier lifetime inversely proportional to SRH centre concentration
+
+### Augur recomb rate low level injection
+
+![augur rate](images/augur_recomb_rate.png) \
+
+for doped semiconductors (swap n and p to get p-type): \
+![augur doped rate](images/augur_doped_rate.png) \
+minority carrier lifetime inversely proportional to doping concentration squared
+
+## High level injection recombination rate for radiative, SRH, Augur
+
+![high injection rates](images/high_injection_recomb_rates.png)
+
+## Ideal Diodes
+
+Formed from pn junction of differently doped materials. \
+Ideal Diode under forward bias, see depletion layer and pn junction for why: \
+![ideal diode bias](images/ideal_diode_forward_bias.png) \
+Ideal Diode under reverse bias: \
+![ideal diode revrse](images/ideal_diode_reverse_bias.png)
+
+## Depletion Layer
+
+With no external voltage, pn junctions will form a depletion layer where holes and electrons recombine as they thermally diffuse between the materials. \
+![depletion layer](images/depletion_layer.png) \
+This causes the depletion layer to become charged - excess positive ions on the n-type side as electrons are removed and excess negative ions on the p-type side as holes are removed. This causes a barrier potential to be formed until equilibrium is reached - stops more movement of electrons and holes when no external voltage. \
+![depletion charge](images/depletion_layer_charge.png) \
+This is barrier potential or built in voltage: \
+![bi voltage](images/built_in_voltage.png)
+
+Thickness (W or Wo) dependant on doping, depletion layer lies majority inside lower doped side of junction. \
+Assuming symmetrical doping, depletion layer thickness under no external voltage: \
+![depletion layer thicc](images/depletion_layer_thiccnes.png) \
+Under external voltage (forward is positive): \
+![layer thicc with voltage](images/depletion_thicc_voltageapplied.png)
+
+Capacitance of depletion layer or depletion layer capacitance: \
+![layer cap](images/capactiance_depletion_layer.png)
+
+## PN junction band diagram
+
+![pn junc band diagram](images/pn_junc_badn_diagram.png) \
+As connected the fermi levels must the same, so bands bend to accomodate this.
+
+## diffusion limited ideal diode under forward voltage bias
+
+![ideal diode forward voltage](images/ideal_diode_forwardvoltage.png) \
+Voltage mostly dropped across depletion layer as neutral regions have high carrier concentrations. Reduces the Vbi, so more carriers diffuse - more current. Amount of new carriers: \
+![new carriers](images/new_carriers_in_neurtral_diodes.png) \
+![excess carriers](images/excess_carrier_density_depletion.png) \
+![excess carrier cont](images/excess_carrier_cont.png) \
+Swap h for e and p for n to get p-type side excess electron density. Sum of Jhole + Jelec is constant, as current must be constant throughout the diode. \
+![total current density](images/total_current_density_ideal_diode.png) \
+for given diode at given temp, only change is due to voltage change. \
+For larger V, so 1 << exp(eV/kt): \
+![ideal diode large v](images/ideal_diode_diffusion_highV.png)
+
+## diffusion limited ideal diode reverse bias
+
+![reverse bias](images/reverse_bias_ideal_diode.png) \
+If V is negative (reverse bias), then right side of equation tends to -1, and J tends to -Js.
+
+## diffusion capacitance ideal diodes
+
+When forward bias, minority carrriers are injected into neutral regions. They take some time to combine, giving extra diffusion capacitance. \
+![diff cap](images/diffusion_cap.png) \
+Under forward bias, diffusion capacitance is typically in the nF range and is much larger than depletion capacitance.
+
+## Dynamic resistance or differential resistance
+
+![dynamic resis](images/dynamic_resistance.png)
+
+## non-ideal diodes or real diodes
+
+### short diodes
+
+length of p-type l<sub>p</sub> and n-type l<sub>n</sub> regions are shorter than the diffusion lengths of carriers Le and Lh. \
+![short diode](images/short_diode_minority_diffusion.png) \
+at distance from depletion region x'=0 the carrier conc is the same and must be 0 when x'=l<sub>p or n</sub>, so linear change as few carriers lost to recombination due to neutral region << diffusion length. \
+Current density (swap p and n, h and e for p-region): \
+![short current](images/short_diode_current_density.png)
+
+## recombination in the depletion layer or depletion layer recombination
+
+Some carriers recombine in the depletion layer and are replenished by external current. \
+![depletion layer recomb](images/depletion_layer_recomb.png) \
+![depletion layer recomb cont](images/depletion_layer_recomb_cont.png) \
+More rigorous analysis (actual equation): \
+![dep layer ecomb](images/dep_layer_recomb.png)
+
+## generation in depletion layer - reverse bias
+
+Reverse bias causes wider depletion layer. In addition, thermal generation of electron-hole pairs can occur in the depletion layer: \
+![dep layer generation](images/depletion_layer_generation.png)
+
+## characteristics of diodes: IV I-V characteristics
+
+![iv diode](images/IV-diodes.png) \
+![iv and temp current diode](images/temp_current_diode.png)
+
+## diode summary
+
+![diode summary](images/diode_summary.png)
+
+## diode breakdown - avalanche breakdown
+
+electric filed over depletion layer large enough that electron gain kinetic energy to break a bond, forming another electron-hole pair. \
+![avalanceh mult](images/avalanceh_multiplier.png) \
+breakdown voltage: \
+![breakdown voltage avalanche](images/breakdown_voltage_avalancghe.png) \
+
+## zener diode - zener breakdown
+
+heavily doped pn junction - apply reverse bias and Ec on one side may be lower than Ev on other side. If gap between p and n materials is small enough, electrons then tunnel from one to the other: \
+![zener diode current density](images/zener_diode_current_density.png)
+
+## Schottky diodes
+
+metal joined to semiconductor. electrons in semiconductor move to metal as there are higher energy VB states they can easily get to. electrons accumulate on metal-semiconductor edge, giving electron depletion region of width W containing positively charged donors and no free electrons. \
+![schottky bands](images/schjottky_bands.png)
+
+no external voltage: \
+![schottky no voltage](images/schottky-no-voltage.png)
+
+forward bias: \
+![schottky dforwad bias](images/schottky-forward-bias.png)
+
+reverse bias: \
+![schottky reverse bias](images/schottky-reverse-bias.png)
+
+used in high-frequency applications.
+
+### ohmic contacts
+
+if metal has smaller work function than semiconductor, no barrier is formed and no restriction to flow current. \
+![ohmic contact](images/homic-contact.png)
+
+## photodetectors or photodetection
+
+photon with energy > Eg absorbed, so electron moves from VB to CB. high energy photons make electrons move to high levels of CB which lose energy through phonons until within 3kT/2 of band edge. \
+alpha is the absorption coefficient. if photon energy = Eg, alpha is low as low amounts of electrons at VB edge and low amount of free states in CB. \
+if photon energy > Eg, alpha is higher as more electrons that can be moved to CB and more states in CB that electron could be moved to. \
+![absoption coeeffficient](images/absoption%20coefficient.png)
+
+## optical absorption beer-lambert law
+
+![beer lambert](images/beer-lambert.png)
+
+## photoconductor
+
+single material, like resistor. incident light causes generation (photogeneration): \
+![photo conductor](images/photoconductor.png) \
+![phopto cond cont](images/photocond-cont.png)
+
+## photodiodes
