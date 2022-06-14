@@ -696,7 +696,7 @@ hall coeff with scattering effect: \
 
 used to measure magnetic fields, effective use in rotating systems and contactless sensors. Useful in vehicles, phones, current sensors, etc.
 
-## Wavefunction, Schrodinger's equation
+## Wavefunction, Schrodinger's equation, wave particle duality principle
 
 Describes dynamic behaviour of quantum system. \
 ![schrodinger](images/schrodinger-equation.png) \
@@ -709,9 +709,194 @@ can become time independent: \
 
 ![wavefunction interpretation](images/wavefucntion_interpretation.png)
 
-## electron energy and electron kinetic energy
+## electron energy and electron kinetic energy and group velocity - slope of E(k)
 
 ![electron ke](images/electron-ke.png) \
 relating electron kinetic energy and velocity: \
 ![electron ke and v](images/velocity-and-energy.png)
 
+## bloch theorem
+
+periodic solids give periodic electron potentials: \
+![bloch](images/bloch.png)
+wavefunction contains unit cell part and planwave part - subbing bloch funciton in for unit cell function: \
+![blkoch wave](images/bloch%20wave.png)
+
+## Kronig Penney Model
+
+![kronigpenney](images/kronig-penney.png) \
+solving for wave function: \
+![solveing kronig](images/solving-kronig-penney.png) \
+boundary conditions for kronig-penney: \
+![boundary](images/kronig-penney-boundary-cond.png) \
+solving the boundary conditions to find the brillouin zone, values of k before which the periodicity starts: \
+![kronig boundayr](images/kronig-solving-boundaries.png) \
+plotting this for 1 brillouin zone and then limiting it to values between -1 and 1 gives allowed energy values, forming the bandgap when unfolded to more brillouin zones: \
+![krong](images/bandgap-kronig.png)
+
+## Effective mass of electon and effective mass of holes
+
+![effective mass](images/effective-mass.png) \
+effective masses affect band structure and band gaps. Also effects energy and velocity for a given wavevector: \
+![kronig diff masses](images/mass-wavevector-v-velocity.png) \
+Effective masses change depending on direction and material
+
+## typical semiconductor effective masses
+
+![semidonc masses](images/typical-semicond-masses.png) \
+![semidonc](images/typical-semicond-bandfeatures.png)
+
+## basic band theory summary: band gaps, periodicity, effective mass
+
+![band theory summary](images/band-theory-summary.png)
+
+## First brillouin zone: all allowed k-space fits in first brilluoin zone
+
+![fist](images/first-brillouin-zone.png)
+
+## Si 3D specifics, Si brillouin zone, Si first brillouin zone
+
+![si](images/3d-si.png)
+
+## Density of states for k-space, k-space DOS, DOS of k-space, 3D DOS, g(E)
+
+![dos kspace](images/dos-kspace.png) \
+3D DOS: \
+![dos 3d](images/dos-3d.png) \
+![3d dos no k](images/3d-dos-nok.png) \
+2D DOS: \
+![2d dos](images/2d-dos.png) \
+1d DOS: \
+![1d dos](images/1d-dos.png)
+
+## converting ellipsoid mass to sphere, Mdos, Mdos-sph
+
+![conv ellip to sph](images/converting-ellipsoid-mass-to-sphere.png) \
+![dos ltt](images/dos-ltt.png)
+
+## conductivity effective mass Mcond
+
+![cond effective amss](images/cond-effective-mass.png)
+
+## effective density of states, carrier concentration calculation alternatives
+
+![carrier conc alt](images/carrier-conc-alternative.png)
+
+## Drift and Diffusion
+
+![drift diffusion](images/drift-diffusiobn.png) \
+![total](images/total-diff-drift.png)
+
+## Fick's Law
+
+![fick](images/fick.png)
+
+## Drift current
+
+![drift current](images/drift-cuirrent.png) \
+At low Efield: \
+![drift curr low mob](images/drift-curr-low-mob.png)
+
+## Mobility or drift mobility
+
+![drift mob](images/drift-mob.png)
+
+## Resistivity and Conductivity
+
+![resistivity-conductobt](images/resistivity-conductivity.png)
+
+## Einstein Relations, Einstein's relation
+
+relates diffusion coefficient to mobility and dimensions: \
+![einstein](images/einstein-relations.png) \
+![einsetin](images/einstein-relations-cont.png)
+
+## Recombination - Generation Centres (SRH centres)
+
+![generations](images/gr-centres.png) \
+use time constants and get more general result: \
+![gr general stats](images/gr-general-stats.png)
+
+## Continuity equations
+
+![cont equations](images/cont-equations.png)
+
+## minority carrier diffusion equations
+
+![minority](images/minority-carrier-diff.png) \
+![minortiy](images/minority-carrier-diff-cont.png)
+
+## carrier action summary - drift, diffusion, mobility, einstein's relation, continuity, minority carrier diffusion
+
+![carrier acc sum](images/carrier-action-sum.png)
+
+## boltzmann transport formulation, BTE
+
+The function f(x, v, t) describes the positions, momentum/velocity of particles at time t, i.e. how many electrons at time t are located at position x and have velocity v. Current can then be computed from: \
+![boltzmann](images/boltzmann-current.png) \
+![b](images/boltzmann-transport.png)
+
+## boltzmann transport with scattering, BTE with scattering
+
+![scattering](images/BTE-with-scattering.png) \
+drift and diffusion with BTE: \
+![drift diff](images/drift-diffusion-bte.png)
+
+## drift current with BTE and displaced distribution
+
+![drfit bte](images/drift-bte.png) \
+displaced distribution: \
+![dr](images/drift-bte-cont.png) \
+finding flux (sum of all k-states times velocty of each state): \
+![b](images/bte-flux.png) \
+finding current from flux, then moving from k-space to energy-space: \
+![b](images/bte-curr.png)
+transport distribution function and reduced drift current from BTE: \
+![btetdf](images/bte-tdf.png) \
+due to df/dE, only carriers near E<sub>F</sub> contribute when using BTE
+
+## diffusion current with BTE
+
+start from full BTE and find flux: \
+![diff](images/diffusion-curr-bte.png) \
+diffusion current from flux and diffusion coefficient: \
+![diff flux](images/diff-curr-flux.png) \
+
+## Scattering rates, scattering times, relaxation rates, relaxation times
+
+elastic, inelastic, isotropic, anisotropic: \
+![scatter types](images/scattering-types.png)
+
+## phonon scattering
+
+phonons are lattice vibrations, move atoms in non-uniform way to strain bonds and change bandgap: \
+![phons](images/acoustic-opticcal-phonons.png)
+
+## ionized impurity scattering and screening
+
+Brooks-Herring equation: \
+![im](images/impurity-scatter.png) \
+strength of screening defined by screening length L<sub>D</sub> - smaller it is, more strongly impurity is shielded and lower scattering effect.
+
+## boundary scattering
+
+![boundary scattering](images/bound-scatter.png)
+
+## surface roughness scattering rate SRS
+
+![srs](images/srs-rate.png)
+
+## alloy scattering
+
+occurs in compounds due to different potential variations in band: \
+![alloy](images/alloy-scatter.png)
+
+## scattering rates summary
+
+![scater](images/scattering-rate-summary.png)
+
+## Momentum relaxation rate
+
+![mom](images/momentum-relax.png)
+
+## thermoelectrics
