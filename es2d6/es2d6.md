@@ -197,6 +197,8 @@ Can multiply out N<sub>c</sub> and N<sub>v</sub> and others to get: \
 
 ![mass action slides](images/mass_action_slides.png)
 
+Materials considered intrinsic if n<sub>i</sub> >> doping concentration.
+
 ## Intrinsic Carrier Concentration vs Temperature
 
 As temp increases, intrinsic carrier concentration also increases: \
@@ -220,3 +222,165 @@ As temp increases, intrinsic carrier concentration also increases: \
   - ![feermi energy intrinsic masses](images/fermi_energy_intrinsic_masses.png)
 - multiplying out N<sub>c</sub> and N<sub>v</sub> and others:
   - ![intrinsic concentration](images/intrinsic_concentration_no_ncnv.png)
+
+## Doping N-Type
+
+Add impurities with larger amount of valence electrons than original material to produce "free electrons", e.g. adding Sb to Si crystal as Sb has 5 valence electrons and Si has 4. \
+![doping si sb](images/doping_si_sb.png)
+
+Si doped with As: \
+![si as doping](images/si_doped_with_As.png)
+
+## Doping P-Type
+
+Add impurities with less valence electrons than original to add "holes". e.g. adding B to Si as B has 3 valence electrons and Si has 4. \
+![doping si b](images/doping_si_b.png)
+
+Si doped with B: \
+![si doped with B](images/si_doped_with_B.png)
+
+## Binding energy
+
+Binding energy of donor carrier (swap Me for Mh for holes) in material (orbits around donor atom until this energy met):\
+![si bidning energy](images/si_binding_energy.png)
+
+## Majority Carrier and Majority Carrier Concentration in Doped Semiconductors
+
+Electrons and Holes are carriers of charge. Whichever carrier is present in the largest number is the majority carrier: **Holes in p-type, electrons in n-type**. The other is the minority carrier.
+
+![ntype ptype band diagrams](images/ntype_ptype_band_diagrams.png)
+
+N<sub>D</sub> = electron donors, N<sub>A</sub> = electron acceptors
+![majority carrier concentration](images/carrier_concentration_in_doped.png)
+
+If |N<sub>D</sub> - N<sub>A</sub>| ~ n<sub>i</sub><sup>2</sup>, then: \
+N-type: ![ntype low doping](images/n-type+low_doping.png) \
+P-type: ![ptype low doping](images/ptype_low_doping.png)
+
+## Majority carrier concentration in Doped Semiconductors Against Temperature 1/T
+
+![doped semicond carrier conc vs temp](images/carrier_concentration_doped_vs_temp.png)
+
+## Degenerate Semiconductors
+
+If doping very high (10<sup>19</sup>cm<sup>-3</sup>+ in Si), can no longer use Boltzmann statistics and must use full Fermi-Dirac Equation as fermi level may lie within CB or VB. Therefore, np=n<sub>i</sub><sup>2</sup>, n=N<sub>d</sub> and p=N<sub>a</sub> are not valid.
+
+## Compound Semiconductors III-V Semiconductors 3-5 Semiconductors
+
+Have group III (3 electrons in valence) and group V (5 electrons in valence) in a unit cell bonded, most likely in zinc blende crystal structure. Acts as 'intrinsic'. Doped: \
+N-type by replacing V atoms with VI atoms (as VI is more similar to V than III) \
+P-type by replacing III atoms with II atoms (as II is more similar to III than V) \
+Doping with IV is ambiguous as could replace V or III, unknown doping outcome.
+
+## Typically Semiconductor Properties Si SiC Ge GaN GaAs InGaAs InAs InSb
+
+![semicond properties](images/semiconductor_properties.png)
+
+## Semiconductor uses with different band gaps
+
+### Wide band gap uses E<sub>g</sub> > 2.5eV
+
+typical semiconductors: SiC, GaN, InGaN \
+electronic uses: high power/temp electronics as more stable: electric vehicles, grid power, radar, high voltage switching
+optical (III-V) uses: white light and UV light sources: LEDs and lasers
+
+### Intermediate band gap uses 2.5eV > E<sub>g</sub> > 0.6eV
+
+Typical semiconductors: Si, Ge, GaAs, GaP, InP, InGaAs \
+electronic uses: all modern electronics (transistors, diodes, etc)
+optical (III-V) uses: visible/high IR LEDs, lasers, detectors and solar cells
+
+### Low band gap uses 0.6eV > E<sub>g</sub>
+
+Typical semiconductors: Sn (alpha), GaSb, InAs, InSb \
+electronic uses: magnetic sensors, high frequency electronics
+optical (III-V) uses: mid IR LEDs, lasers, detectors
+
+## Electric Current Density J<sub>x</sub> and Drift Velocity v<sub>dx</sub> (classical)
+
+![electirc current density](images/electric_current_Density.png) \
+![drift velocity](images/drift_velocity.png) \
+![combined](images/electric_current_and_Drift_velocity.png)
+
+Using v=u+at for electrons and u=0 due to scattering: \
+![vdx with v=u+at](images/vdx_with_vuat.png)
+
+Mean free time (relaxation time) is time between collisions, so: \
+![mean free time and vdx](images/mean_free_time_t_ti.png)
+
+Drift mobility u<sub>d</sub> is a constant of proportionality, can be subbed into v<sub>dx</sub> and J<sub>x</sub>: \
+![drift mobiliuty jx and vdx](images/drift_mobility_in_jx_vdx.png)
+
+Electrons and holes have individual mobilities: \
+![electron drift](images/electron_drift_mobility.png) \
+![hole drift mobility](images/hole_drift_mobility.png)
+
+visual of why Ex causes current to flow (it effectively causes the bands to bend, band bending):\
+![band bending](images/band_bending_Ex.png)
+
+conduction current or total current density J can be split into electron and holes: \
+![current denisty vde vdh](images/current_density_vde_vdh.png) \
+![cuirrent density coinductivity](images/current_density_with_conductivity.png)
+
+This assumed: relaxation time independent of electric field, all electrons have same mass, avg velocity of any 1 electron = avg of all electron velocties. \
+Reasonable assumption for metals/large semiconductors. Doesnt work for small devices with small number of carriers/short distances for electrons to travel, high electric fields so saturation velocity reached, high doping so mass not the same for all electron/hole concentrations.
+
+## Drift mobility temperature dependance
+
+![drift mobility temp](images/drift_mobility_temp_dependence.png)\
+see lattice impurity scattering and lattice vibration scattering for why the below graph occurs: \
+![drift mobility vs temp](images/temp_vs_drift_mobility.png)
+
+## Thermal Velocity
+
+![thermal velocity](images/thermal_velocity.png)
+
+Typically thermal velocity >>> drift velocities in metals: semiconductors allow for drift velocities comparable to thermal velocities.
+
+![thermal velcoity proportional ot t](images/thermal%20velocity%20proportional%20to%20T.png)
+
+## Scattering Processes
+
+### Matthiessen's Rule
+
+Scaterring occurs due to thermal lattice vibrations, impurities and crystal grain boundaries (from impurities/imperfect growth). Matthiessen's Rule gives total scattering probability and total drift mobility. \
+![mattheissens rule](images/mattheiessens_rule.png)
+
+### Lattice Vibration Scattering (classical)
+
+![mean free time lattice](images/mean_free_time_lattice_vibrations.png) \
+S = cross-sectional area of the scatterer \
+V<sub>th</sub> = thermal velocity of carrier \
+N<sub>s</sub> = number of scatterers per unit volume (m<sup>-3</sup>) \
+![scattering lattice](images/scattering_lattice.png) \
+a = amplitude of the atomic vibrations about the equilibrium, a<sup>2</sup> is proportional to temp T \
+S = pi*a<sup>2</sup>
+
+![lattice drift mobility](images/lattice_drift_mobility.png)
+
+### Lattice Impurity Scattering Impurities Scattering
+
+![scattering impurities](images/scattering_ionized_impurities.png)
+![scattering impirities 2](images/scattering_impurities.png)
+
+## Recombination Processes
+
+Free electron finds an incomplete bond, moves from CB to VB. At above 0K thermal excitation constantly moves electrons from VB to CB, and in equilibrium electrons must move from CB to VB at same rate. Excess energy from recombination lost as photon.\
+![wave vectors energy](images/wave_vectors_energy.png) \
+k = wavevector, 'direction' of wave. Momentum must be conserved, so when electron moved from CB to VB must keep the same k. \
+![direct indirect bandgap](images/direct_bandgap_indirect_bandgap.png) \
+Left: direct bandgap, electrons in base of CB have same k as holes in top of VB. \
+Right: indirect bandgap, electrons in base of CB have different k to holes in top of VB.
+
+### Radiative Recombination
+
+Needs direct bandgap, electrons move direct from bottom of CB to top of VB and keep the same k.
+
+### Shockley-Read-Hall Recombination SRH Recombination
+
+Electrons moves (is captured by) from CB to a SRH recombination centre between the CB and VB, and then the SRH centre captures a hole from VB and electron moves to VB. Accommodates momentum mismatch by absorption/emission of phonons (lattice vibrations). SRH centres are impurities or crystal defects, so have different bandgaps to rest of material. \
+![srh centre](images/srh_centre_recombination.png)
+
+Trapping: Similar to SRH, trapping centre takes in electron from CB and holds it, then releases it back to CB when excited. \
+![trapping centre](images/trapping_centre.png)
+
