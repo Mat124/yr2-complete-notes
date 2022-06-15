@@ -175,7 +175,8 @@ Subbing in boltzmann approximation of f(E): \
 ![electrons in CB with fermi](images/electrons_in_cb_with_fermi.png) \
 Splitting into n and N<sub>c</sub>: \
 ![electrons in CB with Nc](images/electrons_in_CB_Nc_and_n.png) \
-N<sub>c</sub> is the effective density of states at the CB edge
+N<sub>c</sub> is the effective density of states at the CB edge. \
+Replace m<sub>e</sub> with m<sub>DOS</sub> to get electron charge density.
 
 ## Holes in Intrinsic Semiconductor, Concentration of Holes in Valence Band VB Intrinsic Semiconductor
 
