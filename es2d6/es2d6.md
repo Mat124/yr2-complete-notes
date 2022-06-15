@@ -1099,5 +1099,19 @@ drain induced barrier lowering DIBL: \
 scaling issues: \
 ![c](images/scaling.png)
 
-## subband quanitzation and low-dimensial channels
+## subband quantization and low-dimensial channels MOSFETS
 
+### inversion in MOSFET
+
+mosfet subbands: \
+![mosfet](images/mosfet-subband.png) \
+particle in a box, solving with boundary conditions: \
+![particle](images/particle-box.png) \
+![p](images/particle-box-2.png) \
+wave function subband quantization: \
+![w](images/wave-subband.png) \
+![w](images/wtf.png) \
+eigenstates, wavefunction and probability density: \
+![sum](images/sum-subbamd.png) \
+finally image - trianglular quantum well: \
+![fin](images/fin-subbanmmd.png)
