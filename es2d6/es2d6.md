@@ -769,7 +769,7 @@ Effective masses change depending on direction and material
 1d DOS: \
 ![1d dos](images/1d-dos.png)
 
-## converting ellipsoid mass to sphere, Mdos, Mdos-sph
+## converting ellipsoid mass to sphere, Mdos, Mdos-sph, density-of-states effective mass, DOS effective mass
 
 ![conv ellip to sph](images/converting-ellipsoid-mass-to-sphere.png) \
 ![dos ltt](images/dos-ltt.png)
