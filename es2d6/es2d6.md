@@ -1105,7 +1105,7 @@ scaling issues: \
 
 mosfet subbands: \
 ![mosfet](images/mosfet-subband.png) \
-particle in a box, solving with boundary conditions: \
+particle in a box, solving with boundary conditions, subband energy: \
 ![particle](images/particle-box.png) \
 ![p](images/particle-box-2.png) \
 wave function subband quantization: \
