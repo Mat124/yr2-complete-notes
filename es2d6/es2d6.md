@@ -1018,13 +1018,13 @@ bjt transport (pnp): \
 ![bjt](images/bjt-pnp-trans.png) \
 bjt emitter current pnp: \
 ![ie bjt](images/ie-bjt.png) \
-emitter injection efficiency and base transport factor: \
+emitter injection efficiency and base transport factor (pnp): \
 ![injec](images/emitter-injection.png) \
-common base current gain and current transfer ratio: \
+common base current gain and current transfer ratio pnp: \
 ![c](images/coimmon-base-curr-gain.png) \
-base current: \
+base current pnp: \
 ![based](images/base-curr.png) \
-beta, ratio of collector to base current: \
+beta, ratio of collector to base current pnp: \
 ![beta](images/beta.png)
 
 ## BJT transistor amplifier, pnp amplifier
