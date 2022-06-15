@@ -900,3 +900,204 @@ occurs in compounds due to different potential variations in band: \
 ![mom](images/momentum-relax.png)
 
 ## thermoelectrics
+
+![t](images/thermo.png) \
+current from combined voltage and temperature: \
+![t](images/thermo-curr.png) \
+change in fermi by change in temperature: \
+![diff temp](images/diff-fermi-t.png)
+simplified current from voltage and temp difference with flux: \
+![flux](images/thermo-curr-flux.png) \
+seebeck voltage Voc and seebeck coefficient S: \
+![see](images/seebeck.png) \
+![see](images/seebeckcoeff.png) \
+power factor, S<sup>2</sup>G: \
+![power](images/power-factor.png) \
+ZT figure of merit: \
+![zt](images/zt.png) \
+calculating ZT figure of merit: \
+![calczt](images/calc-zt.png)
+summary of thermoelectrics, thermoelectrics summary, k=ke+kl: \
+![thermo-sum](images/thermo-sum.png)
+
+conductivity and seebeck relation: \
+![cond](images/conductivity-seebeck.png)
+
+## MOS capacitors
+
+MOS capacitor structure: \
+![moscap](images/mos-cap.png) \
+MOS off, on: \
+![mos off](images/mos-off.png) \
+![mos on](images/mos-on.png) \
+MOS bands with no bias: \
+![mos bands no bias](images/mos-bands-nobias.png) \
+MOS bands with bias, surface potential, distance from instrinsic to fermi level, MOS states p-type: \
+![mos be](images/mos-bending.png) \
+![mos](images/mos-states.png) \
+MOS charge profiles: \
+![mos](images/mos-charge-profilees.png) \
+MOS states n-type: \
+![mos](images/mos-states-n.png) \
+capacitance of MOS, MOS capactiance: \
+![mops](images/mos-capacitance.png) \
+
+MOS CV characterstics at accumulation: \
+![mos acc](images/mos-acc.png) \
+MOS CV characteristics at depletion: \
+![mos dep](images/mos-dep.png) \
+MOS CV characteristics at inversion: \
+![mosinv](images/mos-inv.png) \
+MOS CV summary: \
+![mos](images/mos-cv-sum.png)
+
+MOS voltage drop and MOS surface potential: \
+![mos](images/MOS-surface.png) \
+MOS quantum capacitance: \
+![cap](images/quantum-capacitance.png)
+
+## semiconductor growth techniques
+
+bulk growth: \
+![bulk growth](images/bulk-growth.png) \
+epitaxial growth: \
+![epit](images/epit-grwoth.png)
+summary: \
+![sum](images/growth-sum.png)
+
+## defects in crystals
+
+### vacancies defects, vacancy defect
+
+Site expected to have an atom doesnt: \
+![vacan](images/vanacies.png)
+
+### Edge dislocations
+
+![edge-dsil](images/edge-disl.png)
+
+### Screw dislocations
+
+![s](images/screw-dislocation.png)
+
+### misfit dislocation and threading dislocation
+
+![mis](images/misfit.png) \
+creates lines of electrically active defecets, e.g. dopants or SRH G-R centres. Can be grown out using intermediate buffer layers to reduce strain
+
+### surface defects
+
+![sur](images/surface.png)
+
+## semiconductor fabrication techniques, semiconductor device fabrication
+
+dont have time, read the slides
+
+## optical and xray techniques
+
+dont have time, read the slides, small summary at **scanning techniques summary**
+
+## electron microscopy, electron microscopes
+
+dont have time, read the slides, small summary at **scanning techniques summary**
+
+## STM, scanning probe, SIMS, 
+
+dont have time, read thee slides, small summary at **scanning techniques summary**
+
+## scanning techniques summary
+
+![sum](images/scanning-sum.png)
+
+## bipolar transistor design and characteristics, BJTs
+
+basic design: \
+![bjt](images/bjt_basic.png) \
+bjt transport (pnp): \
+![bjt](images/bjt-pnp-trans.png) \
+bjt emitter current pnp: \
+![ie bjt](images/ie-bjt.png) \
+emitter injection efficiency and base transport factor: \
+![injec](images/emitter-injection.png) \
+common base current gain and current transfer ratio: \
+![c](images/coimmon-base-curr-gain.png) \
+base current: \
+![based](images/base-curr.png) \
+beta, ratio of collector to base current: \
+![beta](images/beta.png)
+
+## BJT transistor amplifier, pnp amplifier
+
+voltage amplification, input resistance, output signal: \
+![pnp amp](images/pnp-amp.png) \
+full small signal input resistance: \
+![small](images/small-sig-input-res.png) \
+full voltage amplification: \
+![samll](images/small-sig-amp.png) \
+transconductance or mutual conductance gm: \
+![gm](images/gm.png) \
+heterostructure BJTs, HBTs: \
+![hbt](images/hbt.png)
+
+## JFETs, junction FET, junction field effect transistors
+
+n channel JFETS structure: \
+![n](images/jfet-nchan.png) \
+n-channel jfet workings Vgs=0: \
+![vgs0](images/jfet-vgs-0.png) \
+reverse bias Vgs, if Vgs > Vp the channel is totally depleted and transistor is off except for small leakage from thermal: \
+![reverse](images/reverse-bias-jfet.png) \
+JFET output characteristics: Ids vs Vds, Ids vs Vgs: \
+![ids](images/idsvds.png) \
+![idsvgs](images/idsvgs.png) \
+JFET as common source amp, transconductance gm and small signal transconductance: \
+![jfet](images/jfetgm.png) \
+jfet voltage gain common source amp: \
+![jfetav](images/jfetav.png) \
+
+## MESFET and MODFET
+
+### MESFET MEtal Semiconductor FET
+
+similar to jfet in operation: \
+![mesfet](images/mesfet.png) \
+mesfet equations, mesfet transconductance, mesfet current: \
+![mesfet](images/mesfet-equations.png) \
+mesfet critical field: \
+![mesfet-crit-field](images/mesfet-crit-field.png)
+
+### MODFET MOdulation Doped FET
+
+used in highfrequency applications, solves problem of low mobility from high doping: \
+![modet](images/modet.png) \
+modfet equations, modefet characteristics: \
+![modfet_eq](images/modfet_eq.png)
+
+## enchancement mode MOSFET metaloxide semiconductor FET
+
+enhancement mosfet structure, enchancement mode means normally off: \
+![mosfet](images/mosfet-enchance-struc.png) \
+mosfet Id vs Vds and Vgs: \
+![moscurve](images/msoefet-curve.png) \
+mosfet saturation region and transconductance: \
+![mos](images/mosfetgm.png)
+semi-empirical for full output - bridge linear and saturation: \
+![mosfet](images/mosfet-semi.png)
+
+## depletion mode MOSFET metaloxide semiconductor FET
+
+depletion mosfet structure: \
+![dep](images/dep-mosfet.png) \
+depletion mosfet d-mode e-mode states: \
+![d](images/dep-mos-modes.png) \
+CMOS, complementary MOS, inverter, nMOS: \
+![cmo](images/cmon.png) \
+CMOS equations, figures of merit, sub-threshold swing: \
+![cmos](images/cmos-eq.png) \
+drain induced barrier lowering DIBL: \
+![d](images/dibl.png) \
+scaling issues: \
+![c](images/scaling.png)
+
+## subband quanitzation and low-dimensial channels
+
