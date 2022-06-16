@@ -564,7 +564,7 @@ if metal has smaller work function than semiconductor, no barrier is formed and 
 
 ## photodetectors or photodetection
 
-photon with energy > Eg absorbed, so electron moves from VB to CB. high energy photons make electrons move to high levels of CB which lose energy through phonons until within 3kT/2 of band edge. \
+photon with energy > Eg absorbed, so electron moves from VB to CB. high energy photons make electrons move to high levels of CB which lose energy through phonons until within 3kT/2 of band edge - average energy increase is Eg + 3kT/2. \
 alpha is the absorption coefficient. if photon energy = Eg, alpha is low as low amounts of electrons at VB edge and low amount of free states in CB. \
 if photon energy > Eg, alpha is higher as more electrons that can be moved to CB and more states in CB that electron could be moved to. \
 ![absoption coeeffficient](images/absoption%20coefficient.png)
